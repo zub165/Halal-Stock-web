@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Unlock Halal Stock</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#102a43;--muted:#5b7186;--primary:#0070ba;--accent:#7b2ff7;--border:#d9e2ec;--ok:#0d7377;--err:#b00020}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(160deg,#e3f2fd,#fce4ec 55%,var(--bg));padding:32px 18px}
+.wrap{max-width:560px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px;box-shadow:0 12px 36px rgba(16,42,67,.08)}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.logo{width:44px;height:44px;border-radius:12px;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:800}
+h1{font-size:1.6rem;margin:0 0 6px}
+.sub{color:var(--muted);margin:0 0 18px;line-height:1.5}
+.price{font-size:1.5rem;font-weight:800;color:var(--accent);margin:14px 0}
+ol{line-height:1.55;color:var(--muted);padding-left:20px;margin:0 0 20px}
+a.btn,button{display:block;width:100%;border:0;border-radius:12px;padding:13px 16px;font-size:1rem;font-weight:650;text-align:center;text-decoration:none;cursor:pointer;margin:8px 0}
+a.btn{background:var(--primary);color:#fff}
+button{background:#123c63;color:#fff}
+button.secondary{background:#edf3f8;color:var(--ink);border:1px solid var(--border)}
+hr{border:0;border-top:1px solid var(--border);margin:22px 0}
+label{display:block;font-size:.88rem;font-weight:650;margin:12px 0 6px}
+input{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:1rem}
+.msg{margin-top:12px;font-size:.9rem;display:none}
+.msg.err{display:block;color:var(--err)}
+.msg.ok{display:block;color:var(--ok)}
+.small{font-size:.82rem;color:var(--muted);line-height:1.5;word-break:break-all}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="card">
+<div class="brand"><div class="logo">UB</div><div><h1>Unlock Halal Stock</h1><p class="sub">Innovators Generation · Web access</p></div></div>
+<p class="sub">Pay once to unlock this web application in your browser.</p>
+<div class="price" id="price">$4.99 USD</div>
+<ol><li>Pay with PayPal.Me.</li><li>Email your receipt to <strong>zub165@yahoo.com</strong> with subject <em>Halal Stock web access</em>.</li><li>Enter the unlock code you receive, or use admin sign-in below.</li></ol>
+<a class="btn" id="paypal" href="https://paypal.me/innovatorgeneration/4.99" target="_blank" rel="noopener">Pay with PayPal</a>
+<button class="secondary" id="emailBtn" type="button">Email my receipt</button>
+<hr>
+<label for="code">Unlock code</label>
+<input id="code" autocomplete="off" placeholder="Paste unlock code">
+<button id="unlockBtn" type="button">Unlock web app</button>
+<hr>
+<h2 style="font-size:1.1rem;margin:0">Admin login</h2>
+<p class="sub" style="margin:6px 0">Owner access does not require payment.</p>
+<label for="adminEmail">Admin email</label>
+<input id="adminEmail" autocomplete="username" placeholder="Admin email">
+<label for="adminPassword">Admin password</label>
+<input id="adminPassword" type="password" autocomplete="current-password" placeholder="Admin password">
+<button class="secondary" id="adminBtn" type="button">Admin unlock</button>
+<div class="msg err" id="msg"></div>
+<p class="small">PayPal link: <span id="paypalText">https://paypal.me/innovatorgeneration/4.99</span></p>
+<p class="small" id="already" style="display:none">This browser is already unlocked. <a href="#" id="openApp">Open app</a> · <a href="?lock=1">Lock again</a></p>
+</div></div>
+<script>
+var CFG = {"appName": "Halal Stock", "priceLabel": "$4.99 USD", "paypalMeUrl": "https://paypal.me/innovatorgeneration/4.99", "contactEmail": "zub165@yahoo.com", "subject": "Halal Stock web access", "unlockCodes": ["URDU-WEB-2026", "INNOVATOR-WEB-2026", "HFA-WEB-2026", "HEALTHFORALL-UNLOCK", "HFA-ADMIN-786"], "admins": [{"email": "zub165@yahoo.com", "hash": "6ef937c819981c8764d467d258588b94bd7fc9ff64a9ed590ae19609647e9c3a"}, {"email": "admin", "hash": "f138f07253dd1e82e4cf1ee90788004d0c7c7a7b3cb7207379d8468c1ab3d4f8"}], "storageKey": "iw_paid_zub165_halal_stock_web"};
+(function(){
+var key=CFG.storageKey;
+function msg(type,text){var m=document.getElementById("msg");m.className="msg "+type;m.textContent=text}
+function safeNext(raw){if(!raw)return"./";try{var u=new URL(raw,location.origin);if(u.origin!==location.origin)return"./";return u.pathname+u.search+u.hash}catch(e){return"./"}}
+var next=safeNext(new URLSearchParams(location.search).get("next"));
+function unlock(){try{localStorage.setItem(key,"1")}catch(e){}msg("ok","Access unlocked. Opening app...");setTimeout(function(){location.replace(next)},400)}
+if(localStorage.getItem(key)==="1"){document.getElementById("already").style.display="block";document.getElementById("openApp").href=next}
+async function sha256(text){var bytes=new TextEncoder().encode(text);var digest=await crypto.subtle.digest("SHA-256",bytes);return Array.from(new Uint8Array(digest)).map(function(b){return b.toString(16).padStart(2,"0")}).join("")}
+document.getElementById("unlockBtn").onclick=function(){var code=(document.getElementById("code").value||"").trim();if(CFG.unlockCodes.indexOf(code)>=0){msg("ok","Valid code. Unlocking...");unlock()}else{msg("err","Invalid unlock code.")}};
+document.getElementById("adminBtn").onclick=async function(){var email=(document.getElementById("adminEmail").value||"").trim().toLowerCase();var pass=document.getElementById("adminPassword").value||"";if(!email||!pass){msg("err","Enter admin email and password.");return}msg("ok","Checking admin credentials...");try{var hash=await sha256(pass);var ok=CFG.admins.some(function(a){return (a.email||"").toLowerCase()===email&&a.hash===hash});if(ok){unlock()}else{msg("err","Admin sign-in failed.")}}catch(e){msg("err","Admin sign-in needs HTTPS. Open this page over HTTPS.")}};
+document.getElementById("emailBtn").onclick=function(){location.href="mailto:zub165@yahoo.com?subject=Halal%20Stock%20web%20access"};
+document.getElementById("code").addEventListener("keydown",function(e){if(e.key==="Enter")document.getElementById("unlockBtn").click()});
+document.getElementById("adminPassword").addEventListener("keydown",function(e){if(e.key==="Enter")document.getElementById("adminBtn").click()});
+})();
+</script>
+</body>
+</html>
